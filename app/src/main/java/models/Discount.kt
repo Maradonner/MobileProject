@@ -1,10 +1,11 @@
 package models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Discount {
+class Discount : Serializable {
     @SerializedName("id")
-    private val id: String? = null
+    val id: String? = null
 
     @SerializedName("title")
     var title: String? = null

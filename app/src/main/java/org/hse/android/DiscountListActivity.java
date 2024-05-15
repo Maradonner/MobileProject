@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -34,7 +35,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
-public class DiscountListActivity extends AppCompatActivity {
+public class DiscountListActivity extends AppCompatActivity{
     RecyclerView recyclerView;
 
     private DiscountAdapter adapter;
@@ -50,7 +51,6 @@ public class DiscountListActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.discountListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
 
 
         getDiscounts();
@@ -72,7 +72,7 @@ public class DiscountListActivity extends AppCompatActivity {
         call.enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.e("FAILED", "getTime", e);
+                Log.e("FAILED", "getDiscounts", e);
             }
 
             @Override
@@ -103,6 +103,7 @@ public class DiscountListActivity extends AppCompatActivity {
             List<Discount> discounts = gson.fromJson(responseString, listType);
 
             adapter = new DiscountAdapter(discounts);
+            adapter.setOnDiscountClickListener(onDiscountClickListener);
 
             handler.post(new Runnable() {
                 @Override
@@ -125,6 +126,20 @@ public class DiscountListActivity extends AppCompatActivity {
 
     }
 
+    private DiscountAdapter.OnDiscountClickListener onDiscountClickListener = new DiscountAdapter.OnDiscountClickListener() {
+        @Override
+        public void onDiscountClick(Discount discount) {
+            // Запускаем новое activity и передаем туда объект Discount
+            Intent intent = new Intent(DiscountListActivity.this, ItemCardActivity.class);
+            Gson gson = new Gson();
+            String discountJson = gson.toJson(discount);
+            // Добавляем JSON-строку в Intent
+            intent.putExtra("discountJson", discountJson);
+            startActivity(intent);
+        }
+    };
+
+
     public static final class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.DiscountViewHolder> {
 
         private List<Discount> discountList;
@@ -132,6 +147,8 @@ public class DiscountListActivity extends AppCompatActivity {
         public DiscountAdapter(List<Discount> discountList) {
             this.discountList = discountList;
         }
+
+        private OnDiscountClickListener onDiscountClickListener;
 
         @NonNull
         @Override
@@ -156,7 +173,7 @@ public class DiscountListActivity extends AppCompatActivity {
             return discountList.size();
         }
 
-        public static class DiscountViewHolder extends RecyclerView.ViewHolder {
+        public class DiscountViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             ImageView imageView;
             TextView title;
             TextView defuaultPrice;
@@ -168,7 +185,24 @@ public class DiscountListActivity extends AppCompatActivity {
                 title = itemView.findViewById(R.id.title);
                 defuaultPrice = itemView.findViewById(R.id.oldPrice);
                 discountPrice = itemView.findViewById(R.id.newPrice);
+                itemView.setOnClickListener(this);
             }
+
+            @Override
+            public void onClick(View v) {
+                // Вызываем метод onDiscountClick() интерфейса OnDiscountClickListener
+                if (onDiscountClickListener != null) {
+                    onDiscountClickListener.onDiscountClick(discountList.get(getAdapterPosition()));
+                }
+            }
+        }
+
+        public interface OnDiscountClickListener {
+            void onDiscountClick(Discount discount);
+        }
+
+        public void setOnDiscountClickListener(OnDiscountClickListener onDiscountClickListener) {
+            this.onDiscountClickListener = onDiscountClickListener;
         }
     }
 }
