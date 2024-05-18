@@ -2,7 +2,6 @@ package org.hse.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
@@ -35,6 +34,10 @@ class MainActivity : AppCompatActivity() {
             startUploadImageActivity()
         }
 
+        findViewById<Button>(R.id.btnToDiscountList).setOnClickListener {
+            startDiscountListActivity()
+        }
+
     }
 
     private fun startLoginActivity() {
@@ -64,6 +67,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun startUploadImageActivity() {
         val intent = Intent(this, UploadImageActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startDiscountListActivity() {
+        val intent = Intent(this, DiscountListActivity::class.java)
         startActivity(intent)
     }
 }

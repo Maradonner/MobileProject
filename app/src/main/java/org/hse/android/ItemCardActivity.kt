@@ -1,37 +1,62 @@
 package org.hse.android
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import models.Comment
+import models.Discount
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import java.io.IOException
+
 
 class ItemCardActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var commentsAdapter: CommentsAdapter
+    private lateinit var discount: Discount
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_card)
 
+        recyclerView = findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val intent = intent
+        val discountJson = intent.getStringExtra("discountJson")
+        // Десериализуем JSON-строку в объект Discount
+        val gson = Gson()
+        discount = gson.fromJson(discountJson, Discount::class.java)
+        discount.title?.let { Log.e("TestDiscountIntent", it) }
+
         val imageView = findViewById<ImageView>(R.id.ivProductImage)
-        val imageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Cat_August_2010-4.jpg/1200px-Cat_August_2010-4.jpg"
+        val title = findViewById<TextView>(R.id.tvProductTitle)
+        val description = findViewById<TextView>(R.id.tvProductDescription)
+        val defaultPrice = findViewById<TextView>(R.id.tvDefaultPrice)
+        val discountPrice = findViewById<TextView>(R.id.tvDiscountPrice)
+        title.setText(discount.title)
+        description.setText(discount.description)
+        defaultPrice.setText(discount.defaultPrice.toString())
+        discountPrice.setText(discount.discountPrice.toString())
+
+        val imageUrl = discount.imageLink
 
         Glide.with(this)
             .load(imageUrl)
             .into(imageView)
 
-        recyclerView = findViewById(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val commentsData = createSampleData()
-        commentsAdapter = CommentsAdapter(commentsData) { comment ->
-            Toast.makeText(this, "Reply to: ${comment.userName}", Toast.LENGTH_SHORT).show()
-        }
-        recyclerView.adapter = commentsAdapter
+        getComments()
     }
 
     private fun createSampleData(): List<Comment> {
@@ -89,5 +114,53 @@ class ItemCardActivity : AppCompatActivity() {
                 )
             )
         )
+    }
+
+    private fun getComments() {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://109.68.213.18/api/Comment/" + discount.id)
+            .addHeader("Content-Type", "application/json")
+            .build()
+
+        val call = client.newCall(request)
+
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FAILED", "getComments", e)
+            }
+
+            @Throws(IOException::class)
+            override fun onResponse(call: Call, response: Response) {
+                parseResponse(response)
+            }
+        })
+    }
+
+    private fun parseResponse(response: Response) {
+
+// Создаем объект Gson
+        val gson = Gson()
+        val body = response.body
+        try {
+            if (body == null) {
+                return
+            }
+            val responseString = body.string()
+            Log.d("TEST_PARSE_comment", responseString)
+
+            val listType = object : TypeToken<List<Comment?>?>() {}.type
+            val comments = gson.fromJson<List<Comment>>(responseString, listType)
+            commentsAdapter = CommentsAdapter(comments) {}
+            recyclerView.adapter = commentsAdapter
+
+// Делаем что-то с данными
+            for (comment in comments) {
+                Log.d("MyApp", "Comment: " + comment.userName + ", " + comment.content)
+            }
+        } catch (e: Exception) {
+            Log.e("PARSE_RESPONSE", "", e)
+        }
+
     }
 }
