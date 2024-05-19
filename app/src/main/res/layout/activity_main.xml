@@ -29,24 +29,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
 
-    <!-- Button for navigating to GoogleActivity -->
-    <Button
-        android:id="@+id/btnToGoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Google Integration"
-        app:layout_constraintTop_toBottomOf="@id/btnToRegister"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
-
     <!-- Button for navigating to ItemCardActivity -->
     <Button
         android:id="@+id/btnToItemCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Item Card"
-        app:layout_constraintTop_toBottomOf="@id/btnToGoogle"
+        app:layout_constraintTop_toBottomOf="@id/btnToRegister"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"/>
