@@ -19,9 +19,6 @@ class MainActivity : AppCompatActivity() {
             startRegisterActivity()
         }
 
-        findViewById<Button>(R.id.btnToGoogle).setOnClickListener {
-            startGoogleActivity()
-        }
 
         findViewById<Button>(R.id.btnToItemCard).setOnClickListener {
             startItemCardActivity()
@@ -44,11 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun startRegisterActivity() {
         val intent = Intent(this, RegisterActivity::class.java)
-        startActivity(intent)
-    }
-
-    private fun startGoogleActivity() {
-        val intent = Intent(this, GoogleActivity::class.java)
         startActivity(intent)
     }
 
