@@ -26,6 +26,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import models.Discount;
+import models.DiscountListResponse;
+import models.DiscountResponse;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -97,10 +99,11 @@ public class DiscountListActivity extends AppCompatActivity{
             //DiscountResponse discountResponse = gson.fromJson(responseString, DiscountResponse.class);
 
             // Определяем тип списка объектов Discount
-            Type listType = new TypeToken<List<Discount>>() {}.getType();
+            //Type listType = new TypeToken<List<Discount>>() {}.getType();
 
 // Распарсиваем JSON-массив в список объектов Discount
-            List<Discount> discounts = gson.fromJson(responseString, listType);
+            DiscountListResponse discountListResponse = gson.fromJson(responseString, DiscountListResponse.class);
+            List<Discount> discounts = discountListResponse.getItems();
 
             adapter = new DiscountAdapter(discounts);
             adapter.setOnDiscountClickListener(onDiscountClickListener);
