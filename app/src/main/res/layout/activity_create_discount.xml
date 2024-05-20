@@ -46,7 +46,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
-        android:id="@+id/editTextPrice"
+        android:id="@+id/editTextDefaultPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Цена"
@@ -56,22 +56,31 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <EditText
-        android:id="@+id/editTextLowerPrice"
+        android:id="@+id/editTextDiscountPrice"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Низшая цена в других местах"
+        android:hint="Цена со скидкой"
         android:inputType="numberDecimal"
-        app:layout_constraintTop_toBottomOf="@id/editTextPrice"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/editTextDefaultPrice" />
 
     <Switch
         android:id="@+id/switchFreeShipping"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Бесплатная отправка"
-        app:layout_constraintTop_toBottomOf="@id/editTextLowerPrice"
+        app:layout_constraintTop_toBottomOf="@id/editTextDiscountPrice"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
+
+    <Button
+        android:id="@+id/buttonSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchFreeShipping" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
