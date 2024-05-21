@@ -151,10 +151,11 @@ class CreateDiscountActivity : AppCompatActivity() {
             try {
                 client.newCall(request).execute().use { response ->
                     withContext(Dispatchers.Main) {
-                        Log.e("ImageLinkin",response.body.toString())
+                        //Log.e("ImageLinkin", response.body?.string() + response.message)
                         if (response.isSuccessful) {
                             Toast.makeText(this@CreateDiscountActivity, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
-                            imageLink = response.message
+                            imageLink = response.body!!.string()
+                            //Log.e("TEST", response.body.toString())
                         } else {
                             Toast.makeText(this@CreateDiscountActivity, "Failed to upload image", Toast.LENGTH_SHORT).show()
                         }
