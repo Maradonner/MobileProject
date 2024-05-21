@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,10 +40,19 @@ import okhttp3.ResponseBody;
 
 public class DiscountListActivity extends AppCompatActivity{
     RecyclerView recyclerView;
+    private Button buttonPrevPage;
+    private Button buttonNextPage;
+    private TextView textViewPagination;
 
     private DiscountAdapter adapter;
 
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private int currentPage = 1;
+    private int totalPages;
+    private int pageSize;
+    private int totalCount;
+    private boolean hasPrevious;
+    private boolean hasNext;
 
 
     @Override
@@ -50,19 +60,68 @@ public class DiscountListActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discount_list);
 
+        buttonPrevPage = findViewById(R.id.buttonPrevPage);
+        buttonNextPage = findViewById(R.id.buttonNextPage);
+        textViewPagination = findViewById(R.id.textViewPagination);
+
+        buttonNextPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               nextPage();
+            }
+        });
+        buttonPrevPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                previousPage();
+            }
+        });
+
+
         recyclerView = findViewById(R.id.discountListView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
 
-
         getDiscounts();
+
     }
+
+    private void nextPage() {
+        if (currentPage < totalPages) {
+            currentPage += 1;
+            getDiscounts();
+        }
+        if (currentPage == totalPages) {
+            buttonNextPage.setEnabled(false);
+        }
+        if (currentPage > 1) {
+            buttonPrevPage.setEnabled(true);
+        }
+    }
+
+    private void previousPage() {
+        if (currentPage > 1) {
+            currentPage -= 1;
+            getDiscounts();
+        }
+        if (currentPage == 1) {
+            buttonPrevPage.setEnabled(false);
+        }
+        if (currentPage < totalPages) {
+            buttonNextPage.setEnabled(true);
+        }
+    }
+
+    private void updateTextViewPagination() {
+        textViewPagination.setText(String.valueOf(currentPage)+"/"+String.valueOf(totalPages));
+    }
+
 
     public void getDiscounts() {
         OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n}");
+        RequestBody body = RequestBody.create(mediaType, "{\r\n \"currentPage\": "+String.valueOf(currentPage)+"\r\n}");
         Request request = new Request.Builder()
                 .url("http://109.68.213.18/api/Discounts/search")
                 .method("POST", body)
@@ -82,6 +141,7 @@ public class DiscountListActivity extends AppCompatActivity{
                 parseResponse(response);
             }
         });
+        updateTextViewPagination();
     }
 
     public void parseResponse(Response response) {
@@ -103,6 +163,15 @@ public class DiscountListActivity extends AppCompatActivity{
 
 // Распарсиваем JSON-массив в список объектов Discount
             DiscountListResponse discountListResponse = gson.fromJson(responseString, DiscountListResponse.class);
+
+            pageSize = discountListResponse.getPageSize();
+            totalPages = discountListResponse.getTotalPages();
+            totalCount = discountListResponse.getTotalCount();
+            hasNext = discountListResponse.getHasNext();
+            hasPrevious = discountListResponse.getHasPrevious();
+            currentPage = discountListResponse.getCurrentPage();
+
+
             List<Discount> discounts = discountListResponse.getItems();
 
             adapter = new DiscountAdapter(discounts);
@@ -119,9 +188,9 @@ public class DiscountListActivity extends AppCompatActivity{
 
 
 // Делаем что-то с данными
-            for (Discount discount : discounts) {
-                Log.d("MyApp", "Discount: " + discount.getTitle() + ", " + discount.getDiscountPrice());
-            }
+            //for (Discount discount : discounts) {
+              //  Log.d("MyApp", "Discount: " + discount.getTitle() + ", " + discount.getDiscountPrice());
+            //}
 
         } catch (Exception e) {
             Log.e("PARSE_RESPONSE", "", e);
