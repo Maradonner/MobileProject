@@ -128,8 +128,8 @@ class CreateDiscountActivity : AppCompatActivity() {
 
 
     private fun uploadImage(uri: Uri) {
-        //val filePath = FileUtils.getPath(this, imageUri!!)
-        val file = File(uri.getPath())
+        val filePath = FileUtils.getPath(this, imageUri!!)
+        val file = File(filePath)
 
 
         val requestBody = MultipartBody.Builder().setType(MultipartBody.FORM)
@@ -154,6 +154,7 @@ class CreateDiscountActivity : AppCompatActivity() {
                         Log.e("ImageLinkin",response.body.toString())
                         if (response.isSuccessful) {
                             Toast.makeText(this@CreateDiscountActivity, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
+                            imageLink = response.message
                         } else {
                             Toast.makeText(this@CreateDiscountActivity, "Failed to upload image", Toast.LENGTH_SHORT).show()
                         }
