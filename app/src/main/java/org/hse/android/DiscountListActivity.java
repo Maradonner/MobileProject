@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.w3c.dom.Text;
+
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
@@ -235,6 +237,9 @@ public class DiscountListActivity extends AppCompatActivity{
             holder.title.setText(discount.getTitle());
             holder.defuaultPrice.setText(String.valueOf(discount.getDefaultPrice()));
             holder.discountPrice.setText(String.valueOf(discount.getDiscountPrice()));
+            holder.country.setText(String.valueOf(discount.getCountry().getName()));
+            holder.shop.setText(String.valueOf(discount.getShop().getName()));
+            holder.commentsCount.setText(String.valueOf(0)); // Сделать получение кол-ва комментов
             Glide.with(holder.itemView.getContext())
                     .load(discount.getImageLink())
                     .into(holder.imageView);
@@ -250,6 +255,9 @@ public class DiscountListActivity extends AppCompatActivity{
             TextView title;
             TextView defuaultPrice;
             TextView discountPrice;
+            TextView country;
+            TextView commentsCount;
+            TextView shop;
 
             public DiscountViewHolder(@NonNull View itemView) {
                 super(itemView);
@@ -257,6 +265,9 @@ public class DiscountListActivity extends AppCompatActivity{
                 title = itemView.findViewById(R.id.title);
                 defuaultPrice = itemView.findViewById(R.id.oldPrice);
                 discountPrice = itemView.findViewById(R.id.newPrice);
+                country = itemView.findViewById(R.id.country);
+                commentsCount = itemView.findViewById(R.id.commentCount);
+                shop = itemView.findViewById(R.id.shop);
                 itemView.setOnClickListener(this);
             }
 
