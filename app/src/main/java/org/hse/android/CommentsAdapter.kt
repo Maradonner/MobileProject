@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class CommentsAdapter(private val comments: List<Comment>, private val onReplyCl
         val tvCreatedAt: TextView = view.findViewById(R.id.tvCreatedAt)
         val btnReply: Button = view.findViewById(R.id.btnReply)
         val rvReplies: RecyclerView = view.findViewById(R.id.rvReplies)
+        val layoutComment: LinearLayout = view.findViewById(R.id.layout_comment)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -31,8 +33,11 @@ class CommentsAdapter(private val comments: List<Comment>, private val onReplyCl
         holder.tvContent.text = comment.content
         holder.tvCreatedAt.text = comment.createdAt
 
+        holder.layoutComment.visibility = View.GONE
+
         holder.btnReply.setOnClickListener {
             onReplyClicked(comment)
+            holder.layoutComment.visibility = View.VISIBLE
         }
 
         if (comment.replies.isNullOrEmpty()) {
@@ -46,4 +51,8 @@ class CommentsAdapter(private val comments: List<Comment>, private val onReplyCl
     }
 
     override fun getItemCount() = comments.size
+
+    private fun addReply() {
+
+    }
 }
