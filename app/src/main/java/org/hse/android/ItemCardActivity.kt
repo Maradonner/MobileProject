@@ -1,22 +1,36 @@
 package org.hse.android
 
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
+import android.view.View
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import models.Comment
 import models.Discount
 import okhttp3.Call
 import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
+import org.json.JSONObject
+import services.AuthInterceptor
+import services.TokenManager
 import java.io.IOException
 
 
@@ -24,6 +38,10 @@ class ItemCardActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var discount: Discount
+    private lateinit var buttonAddComment: Button
+    private lateinit var buttonSubmitComment: Button
+    private lateinit var editTextComment: EditText
+    private lateinit var layoutComments: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +49,22 @@ class ItemCardActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        layoutComments = findViewById(R.id.layout_comment)
+        editTextComment = findViewById(R.id.editTextComment)
+        layoutComments.visibility = View.GONE
+
+        buttonAddComment = findViewById(R.id.btnAddComment)
+
+        buttonAddComment.setOnClickListener {
+            layoutComments.visibility = View.VISIBLE
+        }
+
+        buttonSubmitComment = findViewById(R.id.btnSubmitComment)
+
+        buttonSubmitComment.setOnClickListener {
+            addComment()
+        }
 
         val intent = intent
         val discountJson = intent.getStringExtra("discountJson")
@@ -114,6 +148,65 @@ class ItemCardActivity : AppCompatActivity() {
                 )
             )
         )
+    }
+
+    private fun addComment() {
+        val commentText: String = editTextComment.text.toString()
+        if (!commentText.isEmpty()) {
+            discount.id?.let {
+                CoroutineScope(Dispatchers.IO).launch {
+                    addNewComment(commentText, it)
+                }}
+        }
+        // Сохраните комментарий в базе данных, файле или на сервере в зависимости от ваших требований.
+        Log.e("ASD", commentText)
+
+        // Очистить EditText для ввода следующего комментария.
+        editTextComment.setText("")
+
+        // Скрыть комментарий контейнер.
+        layoutComments.visibility = View.GONE
+    }
+
+    private fun addNewComment(content: String, discountId: String) {
+        val url = "http://109.68.213.18/api/Comment/add" // Замените на ваш API URL
+
+        val jsonObject = JSONObject()
+        jsonObject.put("content", content)
+        jsonObject.put("discountId", discountId)
+        //jsonObject.put("parentCommentId", parentCommentId)
+
+        val requestBody = jsonObject.toString().toRequestBody("application/json; charset=utf-8".toMediaType())
+
+        val tokenManager = TokenManager(this@ItemCardActivity)
+
+        val client = OkHttpClient()
+            .newBuilder()
+            .addInterceptor(AuthInterceptor(tokenManager))
+            .build()
+        val request = Request.Builder()
+            .url(url)
+            .post(requestBody)
+            .build()
+
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
+                // Обработайте ошибку запроса
+            }
+
+            override fun onResponse(call: okhttp3.Call, response: Response) {
+                if (response.isSuccessful) {
+                    Log.e("SuccessResponse", response.toString())
+                    getComments()
+                } else {
+                    Log.e("ErrorResponse", response.toString())
+                }
+            }
+        })
+    }
+
+    private fun submitComment() {
+
     }
 
     private fun getComments() {

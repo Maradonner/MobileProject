@@ -237,8 +237,12 @@ public class DiscountListActivity extends AppCompatActivity{
             holder.title.setText(discount.getTitle());
             holder.defuaultPrice.setText(String.valueOf(discount.getDefaultPrice()));
             holder.discountPrice.setText(String.valueOf(discount.getDiscountPrice()));
-            holder.country.setText(String.valueOf(discount.getCountry().getName()));
-            holder.shop.setText(String.valueOf(discount.getShop().getName()));
+            if (discount.getCountry() != null) {
+                holder.country.setText(String.valueOf(discount.getCountry().getName()));
+            }
+            if (discount.getShop() != null) {
+                holder.shop.setText(String.valueOf(discount.getShop().getName()));
+            }
             holder.commentsCount.setText(String.valueOf(0)); // Сделать получение кол-ва комментов
             Glide.with(holder.itemView.getContext())
                     .load(discount.getImageLink())
