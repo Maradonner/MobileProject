@@ -7,7 +7,7 @@ class Country {
     private val id: String? = null
 
     @SerializedName("name")
-    private val name: String? = null
+    val name: String? = null
 
     @SerializedName("isoCode")
     private val isoCode: String? = null

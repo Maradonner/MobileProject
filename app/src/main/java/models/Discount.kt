@@ -44,8 +44,8 @@ class Discount : Serializable {
     private val categories: List<Category>? = null
 
     @SerializedName("shop")
-    private val shop: Shop? = null
+    val shop: Shop? = null
 
     @SerializedName("country")
-    private val country: Country? = null
+    val country: Country? = null
 }
