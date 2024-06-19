@@ -35,6 +35,10 @@ class MainActivity : AppCompatActivity() {
             startDiscountListActivity()
         }
 
+        findViewById<Button>(R.id.btnToProfileActivity).setOnClickListener {
+            startProfileActivity()
+        }
+
     }
 
     private fun startLoginActivity() {
@@ -64,6 +68,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun startDiscountListActivity() {
         val intent = Intent(this, DiscountListActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun startProfileActivity() {
+        val intent = Intent(this, ProfileActivity::class.java)
         startActivity(intent)
     }
 }
