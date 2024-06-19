@@ -1,7 +1,6 @@
 package org.hse.android
 
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -9,7 +8,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +32,7 @@ import services.TokenManager
 import java.io.IOException
 
 
-class ItemCardActivity : AppCompatActivity() {
+class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var discount: Discount
@@ -57,7 +55,11 @@ class ItemCardActivity : AppCompatActivity() {
         buttonAddComment = findViewById(R.id.btnAddComment)
 
         buttonAddComment.setOnClickListener {
-            layoutComments.visibility = View.VISIBLE
+            if (layoutComments.visibility == View.VISIBLE) {
+                layoutComments.visibility = View.GONE
+            } else {
+                layoutComments.visibility = View.VISIBLE
+            }
         }
 
         buttonSubmitComment = findViewById(R.id.btnSubmitComment)
@@ -248,7 +250,7 @@ class ItemCardActivity : AppCompatActivity() {
             val comments = gson.fromJson<List<Comment>>(responseString, listType)
 
             runOnUiThread {
-                commentsAdapter = CommentsAdapter(comments, discount.id!!, TokenManager(this@ItemCardActivity)) {}
+                commentsAdapter = CommentsAdapter(this, comments, discount.id!!, TokenManager(this@ItemCardActivity), this) {}
                 recyclerView.adapter = commentsAdapter
             }
 
@@ -260,5 +262,9 @@ class ItemCardActivity : AppCompatActivity() {
             Log.e("PARSE_RESPONSE", "", e)
         }
 
+    }
+
+    override fun onCommentsUpdated() {
+        getComments() // Вызов функции getComments()
     }
 }

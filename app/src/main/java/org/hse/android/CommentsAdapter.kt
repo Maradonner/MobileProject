@@ -1,5 +1,7 @@
 package org.hse.android
 
+import android.app.Activity
+import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,11 +26,12 @@ import services.AuthInterceptor
 import services.TokenManager
 import java.io.IOException
 
-class CommentsAdapter(private val comments: List<Comment>, private val parentDiscountId: String, private val tokenManager: TokenManager, private val onReplyClicked: (Comment) -> Unit) :
+class CommentsAdapter(private val context: Context, private var comments: List<Comment>, private val parentDiscountId: String, private val tokenManager: TokenManager, private val activity: ItemCardActivity, private val onReplyClicked: (Comment) -> Unit) :
     RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
 
        private lateinit var editTextComment: EditText
         private lateinit var layoutComment: LinearLayout
+
 
     class CommentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvUserName: TextView = view.findViewById(R.id.tvUserName)
@@ -59,10 +62,20 @@ class CommentsAdapter(private val comments: List<Comment>, private val parentDis
 
         holder.btnReply.setOnClickListener {
             onReplyClicked(comment)
-            layoutComment.visibility = View.VISIBLE
+            layoutComment = holder.bufLayoutComment
+            editTextComment = holder.bufEditTextComment
+            Log.e("COMTEST",comment.id.toString())
+            Log.e("COMTEST",comment.replies.toString())
+            if (layoutComment.visibility == View.VISIBLE) {
+                layoutComment.visibility = View.GONE
+            } else {
+                layoutComment.visibility = View.VISIBLE
+            }
         }
 
         holder.btnSubmitReply.setOnClickListener {
+            Log.e("COMTEST",comment.id.toString())
+            Log.e("COMTEST",comment.replies.toString())
             addReply(comment)
         }
 
@@ -70,9 +83,12 @@ class CommentsAdapter(private val comments: List<Comment>, private val parentDis
             holder.rvReplies.visibility = View.GONE
         } else {
             holder.rvReplies.visibility = View.VISIBLE
-            val adapter = CommentsAdapter(comment.replies, parentDiscountId, tokenManager, onReplyClicked)
-            holder.rvReplies.layoutManager = LinearLayoutManager(holder.itemView.context)
-            holder.rvReplies.adapter = adapter
+            (context as Activity).runOnUiThread {
+                val adapter =
+                    CommentsAdapter(context, comment.replies, parentDiscountId, tokenManager, activity, onReplyClicked)
+                holder.rvReplies.layoutManager = LinearLayoutManager(holder.itemView.context)
+                holder.rvReplies.adapter = adapter
+            }
         }
     }
 
@@ -123,10 +139,20 @@ class CommentsAdapter(private val comments: List<Comment>, private val parentDis
             override fun onResponse(call: okhttp3.Call, response: Response) {
                 if (response.isSuccessful) {
                     Log.e("SuccessResponse", response.toString())
+                    activity.onCommentsUpdated()
                 } else {
                     Log.e("ErrorResponse", response.toString() + requestBody)
                 }
             }
         })
+    }
+
+    fun updateComments(newComments: List<Comment>) {
+        comments = newComments
+        notifyDataSetChanged()
+    }
+
+    interface OnCommentsUpdatedListener {
+        fun onCommentsUpdated()
     }
 }
