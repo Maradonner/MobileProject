@@ -1,143 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
-
-    <!-- Product Image (Loaded Dynamically) -->
-    <ImageView
-        android:id="@+id/ivProductImage"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        android:contentDescription="Product Image"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
-    <!-- Like Button -->
-    <ImageButton
-        android:id="@+id/btnLike"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:contentDescription="like"
-        app:layout_constraintTop_toBottomOf="@id/ivProductImage"
-        app:layout_constraintStart_toStartOf="@id/ivProductImage"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Dislike Button -->
-    <ImageButton
-        android:id="@+id/btnDislike"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:contentDescription="dislike"
-        app:layout_constraintTop_toBottomOf="@id/ivProductImage"
-        app:layout_constraintEnd_toEndOf="@id/ivProductImage"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Product Title -->
-    <TextView
-        android:id="@+id/tvProductTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:text="Product Title"
-        app:layout_constraintTop_toBottomOf="@id/btnLike"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"/>
-
-    <!-- Product Description -->
-    <TextView
-        android:id="@+id/tvProductDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Product Description"
-        app:layout_constraintTop_toBottomOf="@id/tvProductTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="4dp"/>
-
-    <org.hse.android.StrikeThroughTextView
-        android:id="@+id/tvDefaultPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Default Price"
-        app:layout_constraintTop_toBottomOf="@id/tvProductDescription"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tvDiscountPrice"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"/>
-
-    <TextView
-        android:id="@+id/tvDiscountPrice"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="Discount Price"
-        app:layout_constraintTop_toTopOf="@id/tvDefaultPrice"
-        app:layout_constraintBottom_toBottomOf="@id/tvDefaultPrice"
-        app:layout_constraintStart_toEndOf="@id/tvDefaultPrice"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="16dp"/>
-
-    <!-- Action Button to Link (Dynamic Link) -->
-    <Button
-        android:id="@+id/btnViewOffer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Action Button to Link"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDiscountPrice" />
-
-    <!-- RecyclerView for comments or additional details -->
-    <Button
-        android:id="@+id/btnAddComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Comment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnViewOffer" />
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
 
     <LinearLayout
-        android:id="@+id/layout_comment"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAddComment">
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <EditText
-            android:id="@+id/editTextComment"
-            android:layout_width="wrap_content"
+        <io.getstream.photoview.PhotoView
+            android:id="@+id/ivProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="350dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Discount Image" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Write your comment..."
-            android:textSize="16sp" />
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <ImageButton
+                android:id="@+id/btnLike"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:contentDescription="like"
+                android:background="@color/white"
+                android:scaleType="fitCenter"
+                android:src="@drawable/like" />
+
+            <ImageButton
+                android:id="@+id/btnDislike"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:contentDescription="dislike"
+                android:background="@color/white"
+                android:src="@drawable/dislike"
+                android:scaleType="fitCenter"
+                android:layout_marginStart="48dp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnViewOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View Offer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvProductTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:text="Product Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        <TextView
+            android:id="@+id/tvProductDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Product Description"
+            android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="16dp">
+
+            <org.hse.android.StrikeThroughTextView
+                android:id="@+id/tvDefaultPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Default Price"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <TextView
+                android:id="@+id/tvDiscountPrice"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:text="Discount Price"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btnSubmitComment"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnAddComment"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:layout_marginTop="16dp"
+            android:text="Add Comment"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        <LinearLayout
+            android:id="@+id/layout_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/editTextComment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Write your comment..."
+                android:textSize="16sp"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+
+            <Button
+                android:id="@+id/btnSubmitComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Submit"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            tools:listitem="@layout/item_comment" />
 
     </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layout_comment"
-        tools:listitem="@layout/item_comment" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

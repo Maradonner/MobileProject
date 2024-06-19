@@ -49,6 +49,6 @@ class Discount : Serializable {
     @SerializedName("country")
     val country: Country? = null
 
-    @SerializedName("comments")
-    val comments: List<Comment>? = null
+    @SerializedName("commentsCount")
+    val commentsCount: Int? = 0
 }

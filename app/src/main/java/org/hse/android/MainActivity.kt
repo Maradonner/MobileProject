@@ -19,10 +19,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        findViewById<Button>(R.id.btnToItemCard).setOnClickListener {
-            startItemCardActivity()
-        }
-
         findViewById<Button>(R.id.btnToCreateDiscount).setOnClickListener {
             startCreateDiscountActivity()
         }
