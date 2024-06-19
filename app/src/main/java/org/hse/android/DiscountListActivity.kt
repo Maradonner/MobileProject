@@ -1,298 +1,228 @@
-package org.hse.android;
+package org.hse.android
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import android.content.Intent
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import models.Comment
+import models.Discount
+import models.DiscountListResponse
+import models.DiscountResponse
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
+import java.lang.reflect.Type
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+class DiscountListActivity : AppCompatActivity() {
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var buttonPrevPage: Button
+    private lateinit var buttonNextPage: Button
+    private lateinit var textViewPagination: TextView
 
-import com.bumptech.glide.Glide;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+    private var adapter: DiscountAdapter? = null
 
-import org.w3c.dom.Text;
+    private val handler = Handler(Looper.getMainLooper())
+    private var currentPage = 1
+    private var totalPages = 0
+    private var pageSize = 0
+    private var totalCount = 0
+    private var hasPrevious = false
+    private var hasNext = false
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.List;
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_discount_list)
 
-import models.Comment;
-import models.Discount;
-import models.DiscountListResponse;
-import models.DiscountResponse;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
+        buttonPrevPage = findViewById(R.id.buttonPrevPage)
+        buttonNextPage = findViewById(R.id.buttonNextPage)
+        textViewPagination = findViewById(R.id.textViewPagination)
 
-public class DiscountListActivity extends AppCompatActivity{
-    RecyclerView recyclerView;
-    private Button buttonPrevPage;
-    private Button buttonNextPage;
-    private TextView textViewPagination;
+        buttonNextPage.setOnClickListener { nextPage() }
+        buttonPrevPage.setOnClickListener { previousPage() }
 
-    private DiscountAdapter adapter;
+        recyclerView = findViewById(R.id.discountListView)
+        val layoutManager = GridLayoutManager(this, 2)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
-    private final Handler handler = new Handler(Looper.getMainLooper());
-    private int currentPage = 1;
-    private int totalPages;
-    private int pageSize;
-    private int totalCount;
-    private boolean hasPrevious;
-    private boolean hasNext;
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_discount_list);
-
-        buttonPrevPage = findViewById(R.id.buttonPrevPage);
-        buttonNextPage = findViewById(R.id.buttonNextPage);
-        textViewPagination = findViewById(R.id.textViewPagination);
-
-        buttonNextPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               nextPage();
-            }
-        });
-        buttonPrevPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                previousPage();
-            }
-        });
-
-
-        recyclerView = findViewById(R.id.discountListView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
-
-        getDiscounts();
+        getDiscounts()
 
     }
 
-    private void nextPage() {
+    private fun nextPage() {
         if (currentPage < totalPages) {
-            currentPage += 1;
-            getDiscounts();
+            currentPage += 1
+            getDiscounts()
         }
         if (currentPage == totalPages) {
-            buttonNextPage.setEnabled(false);
+            buttonNextPage.isEnabled = false
         }
         if (currentPage > 1) {
-            buttonPrevPage.setEnabled(true);
+            buttonPrevPage.isEnabled = true
         }
     }
 
-    private void previousPage() {
+    private fun previousPage() {
         if (currentPage > 1) {
-            currentPage -= 1;
-            getDiscounts();
+            currentPage -= 1
+            getDiscounts()
         }
         if (currentPage == 1) {
-            buttonPrevPage.setEnabled(false);
+            buttonPrevPage.isEnabled = false
         }
         if (currentPage < totalPages) {
-            buttonNextPage.setEnabled(true);
+            buttonNextPage.isEnabled = true
         }
     }
 
-    private void updateTextViewPagination() {
-        textViewPagination.setText(String.valueOf(currentPage)+"/"+String.valueOf(totalPages));
+    private fun updateTextViewPagination() {
+        textViewPagination.text = "$currentPage/$totalPages"
     }
 
+    fun getDiscounts() {
+        val client = OkHttpClient().newBuilder().build()
+        val mediaType = "application/json".toMediaType()
+        val body = "{\r\n \"currentPage\": $currentPage,\r\n\"pageSize\": 12\r\n}".toRequestBody(mediaType)
+        val request = Request.Builder()
+            .url("http://109.68.213.18/api/Discounts/search")
+            .method("POST", body)
+            .addHeader("Content-Type", "application/json")
+            .build()
 
-    public void getDiscounts() {
-        OkHttpClient client = new OkHttpClient().newBuilder()
-                .build();
-        MediaType mediaType = MediaType.parse("application/json");
-        RequestBody body = RequestBody.create(mediaType, "{\r\n \"currentPage\": "+String.valueOf(currentPage)+"\r\n}");
-        Request request = new Request.Builder()
-                .url("http://109.68.213.18/api/Discounts/search")
-                .method("POST", body)
-                .addHeader("Content-Type", "application/json")
-                .build();
+        val call = client.newCall(request)
 
-        Call call = client.newCall(request);
-
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(@NonNull Call call, @NonNull IOException e) {
-                Log.e("FAILED", "getDiscounts", e);
+        call.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("FAILED", "getDiscounts", e)
             }
 
-            @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                parseResponse(response);
+            override fun onResponse(call: Call, response: Response) {
+                parseResponse(response)
             }
-        });
-        updateTextViewPagination();
+        })
+
+        updateTextViewPagination()
     }
 
-    public void parseResponse(Response response) {
-// Создаем объект Gson
-        Gson gson = new Gson();
-        ResponseBody body = response.body();
+    fun parseResponse(response: Response) {
+        val gson = Gson()
+        val body = response.body
         try {
             if (body == null) {
-                return;
+                return
             }
-            String responseString = body.string();
-            Log.d("TEST_PARSE", responseString);
+            val responseString = body.string()
+            Log.d("TEST_PARSE", responseString)
 
-            // Преобразуем ответ в формате JSON в объект Java
-            //DiscountResponse discountResponse = gson.fromJson(responseString, DiscountResponse.class);
+            val discountListResponse = gson.fromJson(responseString, DiscountListResponse::class.java)
 
-            // Определяем тип списка объектов Discount
-            //Type listType = new TypeToken<List<Discount>>() {}.getType();
+            pageSize = discountListResponse.pageSize!!
+            totalPages = discountListResponse.totalPages!!
+            totalCount = discountListResponse.totalCount!!
+            hasNext = discountListResponse.hasNext!!
+            hasPrevious = discountListResponse.hasPrevious!!
+            currentPage = discountListResponse.currentPage!!
 
-// Распарсиваем JSON-массив в список объектов Discount
-            DiscountListResponse discountListResponse = gson.fromJson(responseString, DiscountListResponse.class);
+            runOnUiThread {
+                updateTextViewPagination()
+            }
 
-            pageSize = discountListResponse.getPageSize();
-            totalPages = discountListResponse.getTotalPages();
-            totalCount = discountListResponse.getTotalCount();
-            hasNext = discountListResponse.getHasNext();
-            hasPrevious = discountListResponse.getHasPrevious();
-            currentPage = discountListResponse.getCurrentPage();
+            val discounts = discountListResponse.items
 
+            adapter = DiscountAdapter(discounts!!)
+            adapter?.onDiscountClickListener = onDiscountClickListener
 
-            List<Discount> discounts = discountListResponse.getItems();
-
-
-            adapter = new DiscountAdapter(discounts);
-            adapter.setOnDiscountClickListener(onDiscountClickListener);
-
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    // Обновите пользовательский интерфейс здесь
-                    // Например, обновите список discountListView
-                    recyclerView.setAdapter(adapter);
-                }
-            });
-
-
-// Делаем что-то с данными
-            //for (Discount discount : discounts) {
-              //  Log.d("MyApp", "Discount: " + discount.getTitle() + ", " + discount.getDiscountPrice());
-            //}
-
-        } catch (Exception e) {
-            Log.e("PARSE_RESPONSE", "", e);
+            handler.post {
+                recyclerView.adapter = adapter
+            }
+        } catch (e: Exception) {
+            Log.e("PARSE_RESPONSE", "", e)
         }
-
     }
 
-    private DiscountAdapter.OnDiscountClickListener onDiscountClickListener = new DiscountAdapter.OnDiscountClickListener() {
-        @Override
-        public void onDiscountClick(Discount discount) {
-            // Запускаем новое activity и передаем туда объект Discount
-            Intent intent = new Intent(DiscountListActivity.this, ItemCardActivity.class);
-            Gson gson = new Gson();
-            String discountJson = gson.toJson(discount);
-            // Добавляем JSON-строку в Intent
-            Log.d("CheckCOms", discountJson);
-            intent.putExtra("discountJson", discountJson);
-            startActivity(intent);
-        }
-    };
+    private val onDiscountClickListener = DiscountAdapter.OnDiscountClickListener { discount: Discount ->
+        val intent = Intent(this@DiscountListActivity, ItemCardActivity::class.java)
+        val gson = Gson()
+        val discountJson = gson.toJson(discount)
+        Log.d("CheckCOms", discountJson)
+        intent.putExtra("discountJson", discountJson)
+        startActivity(intent)
+    }
 
+    class DiscountAdapter(private val discountList: List<Discount>) :
+        RecyclerView.Adapter<DiscountAdapter.DiscountViewHolder>() {
 
-    public static final class DiscountAdapter extends RecyclerView.Adapter<DiscountAdapter.DiscountViewHolder> {
+        var onDiscountClickListener: OnDiscountClickListener? = null
 
-        private List<Discount> discountList;
-
-        public DiscountAdapter(List<Discount> discountList) {
-            this.discountList = discountList;
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DiscountViewHolder {
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_discount, parent, false)
+            return DiscountViewHolder(view)
         }
 
-        private OnDiscountClickListener onDiscountClickListener;
-
-        @NonNull
-        @Override
-        public DiscountViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_discount, parent, false);
-            return new DiscountViewHolder(view);
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull DiscountViewHolder holder, int position) {
-            Discount discount = discountList.get(position);
-            holder.title.setText(discount.getTitle());
-            holder.defuaultPrice.setText(String.valueOf(discount.getDefaultPrice()));
-            holder.discountPrice.setText(String.valueOf(discount.getDiscountPrice()));
-            if (discount.getCountry() != null) {
-                holder.country.setText(String.valueOf(discount.getCountry().getName()));
+        override fun onBindViewHolder(holder: DiscountViewHolder, position: Int) {
+            val discount = discountList[position]
+            holder.title.text = discount.title
+            holder.defuaultPrice.text = discount.defaultPrice.toString()
+            holder.discountPrice.text = discount.discountPrice.toString()
+            if (discount.country != null) {
+                holder.country.text = discount.country.name
             }
-            if (discount.getShop() != null) {
-                holder.shop.setText(String.valueOf(discount.getShop().getName()));
+            if (discount.shop != null) {
+                holder.shop.text = discount.shop.name
             }
-            holder.commentsCount.setText(String.valueOf(discount.getComments().size())); // Сделать получение кол-ва комментов
-            Glide.with(holder.itemView.getContext())
-                    .load(discount.getImageLink())
-                    .into(holder.imageView);
+            holder.commentsCount.text = discount.comments!!.size.toString()
+            Glide.with(holder.itemView.context)
+                .load(discount.imageLink)
+                .into(holder.imageView)
         }
 
-        @Override
-        public int getItemCount() {
-            return discountList.size();
+        override fun getItemCount(): Int {
+            return discountList.size
         }
 
-        public class DiscountViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-            ImageView imageView;
-            TextView title;
-            TextView defuaultPrice;
-            TextView discountPrice;
-            TextView country;
-            TextView commentsCount;
-            TextView shop;
+        inner class DiscountViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+            var imageView: ImageView
+            var title: TextView
+            var defuaultPrice: TextView
+            var discountPrice: TextView
+            var country: TextView
+            var commentsCount: TextView
+            var shop: TextView
 
-            public DiscountViewHolder(@NonNull View itemView) {
-                super(itemView);
-                imageView = itemView.findViewById(R.id.image);
-                title = itemView.findViewById(R.id.title);
-                defuaultPrice = itemView.findViewById(R.id.oldPrice);
-                discountPrice = itemView.findViewById(R.id.newPrice);
-                country = itemView.findViewById(R.id.country);
-                commentsCount = itemView.findViewById(R.id.commentCount);
-                shop = itemView.findViewById(R.id.shop);
-                itemView.setOnClickListener(this);
+            init {
+                imageView = itemView.findViewById(R.id.image)
+                title = itemView.findViewById(R.id.title)
+                defuaultPrice = itemView.findViewById(R.id.oldPrice)
+                discountPrice = itemView.findViewById(R.id.newPrice)
+                country = itemView.findViewById(R.id.country)
+                commentsCount = itemView.findViewById(R.id.commentCount)
+                shop = itemView.findViewById(R.id.shop)
+                itemView.setOnClickListener(this)
             }
 
-            @Override
-            public void onClick(View v) {
-                // Вызываем метод onDiscountClick() интерфейса OnDiscountClickListener
-                if (onDiscountClickListener != null) {
-                    onDiscountClickListener.onDiscountClick(discountList.get(getAdapterPosition()));
-                }
+            override fun onClick(v: View) {
+                onDiscountClickListener?.onDiscountClick(discountList[adapterPosition])
             }
         }
 
-        public interface OnDiscountClickListener {
-            void onDiscountClick(Discount discount);
-        }
-
-        public void setOnDiscountClickListener(OnDiscountClickListener onDiscountClickListener) {
-            this.onDiscountClickListener = onDiscountClickListener;
+        fun interface OnDiscountClickListener {
+            fun onDiscountClick(discount: Discount)
         }
     }
 }
