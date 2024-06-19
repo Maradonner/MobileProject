@@ -1,83 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Button for navigating to LoginActivity -->
-    <Button
-        android:id="@+id/btnToLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Login"
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:src="@drawable/logo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="32dp" />
 
-    <!-- Button for navigating to RegisterActivity -->
-    <Button
-        android:id="@+id/btnToRegister"
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewMenu"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Register"
-        app:layout_constraintTop_toBottomOf="@id/btnToLogin"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toBottomOf="@id/ivLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="32dp">
 
-    <!-- Button for navigating to ItemCardActivity -->
-    <Button
-        android:id="@+id/btnToItemCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Item Card"
-        app:layout_constraintTop_toBottomOf="@id/btnToRegister"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
-    <Button
-        android:id="@+id/btnToCreateDiscount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Create Discount"
-        app:layout_constraintTop_toBottomOf="@id/btnToItemCard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+            <Button
+                android:id="@+id/btnToLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Login"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btnToUploadImage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Upload Image"
-        app:layout_constraintTop_toBottomOf="@id/btnToCreateDiscount"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp"/>
+            <Button
+                android:id="@+id/btnToRegister"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Register"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btnToDiscountList"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Discount List"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnToUploadImage" />
+            <Button
+                android:id="@+id/btnToCreateDiscount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Create Discount"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/btnToProfileActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Profile"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnToDiscountList" />
+            <Button
+                android:id="@+id/btnToUploadImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Image"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/btnToDiscountList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Discount List"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button"
+                android:layout_marginBottom="16dp" />
+
+            <Button
+                android:id="@+id/btnToProfileActivity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Profile"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

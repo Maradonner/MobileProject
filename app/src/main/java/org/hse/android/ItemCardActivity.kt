@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import io.getstream.photoview.PhotoView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -75,7 +75,7 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
         discount = gson.fromJson(discountJson, Discount::class.java)
         discount.title?.let { Log.e("TestDiscountIntent", it) }
 
-        val imageView = findViewById<ImageView>(R.id.ivProductImage)
+        val imageView = findViewById<PhotoView>(R.id.ivProductImage)
         val title = findViewById<TextView>(R.id.tvProductTitle)
         val description = findViewById<TextView>(R.id.tvProductDescription)
         val defaultPrice = findViewById<TextView>(R.id.tvDefaultPrice)
@@ -89,6 +89,7 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
 
         Glide.with(this)
             .load(imageUrl)
+            .placeholder(R.drawable.placeholder_image)
             .into(imageView)
 
 
@@ -244,7 +245,6 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
             val responseString = body.string()
 
             Log.d("TEST_PARSE_comment", responseString)
-            Log.d("TEST_COMMENTS_SIZE", discount.comments?.size.toString())
 
             val listType = object : TypeToken<List<Comment?>?>() {}.type
             val comments = gson.fromJson<List<Comment>>(responseString, listType)
@@ -254,10 +254,6 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
                 recyclerView.adapter = commentsAdapter
             }
 
-// Делаем что-то с данными
-            for (comment in discount.comments!!) {
-                Log.d("MyApp", "Comment: " + comment.userName + ", " + comment.content)
-            }
         } catch (e: Exception) {
             Log.e("PARSE_RESPONSE", "", e)
         }

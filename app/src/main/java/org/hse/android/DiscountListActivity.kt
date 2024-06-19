@@ -18,16 +18,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import models.Comment
 import models.Discount
 import models.DiscountListResponse
-import models.DiscountResponse
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
-import java.lang.reflect.Type
 
 class DiscountListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -186,10 +182,11 @@ class DiscountListActivity : AppCompatActivity() {
             if (discount.shop != null) {
                 holder.shop.text = discount.shop.name
             }
-            holder.commentsCount.text = discount.comments!!.size.toString()
             Glide.with(holder.itemView.context)
                 .load(discount.imageLink)
+                .placeholder(R.drawable.placeholder_image)
                 .into(holder.imageView)
+            holder.commentsCount.text = discount.commentsCount.toString()
         }
 
         override fun getItemCount(): Int {
