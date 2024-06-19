@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
@@ -20,28 +21,36 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import services.TokenManager
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var editTextId: EditText
+    private lateinit var editTextUsername: EditText
     private lateinit var editTextPassword: EditText
-    private lateinit var btnLogin: Button
+    private lateinit var btnRegister: Button
+    private lateinit var loginRedirectText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
 
-        editTextId = findViewById(R.id.editTextId)
-        editTextPassword = findViewById(R.id.editTextTextPassword)
-        btnLogin = findViewById(R.id.btnRegister)
-        btnLogin.setOnClickListener {
+        editTextUsername = findViewById(R.id.signup_username)
+        editTextPassword = findViewById(R.id.signup_password)
+        btnRegister = findViewById(R.id.signup_button)
+        loginRedirectText = findViewById(R.id.loginRedirectText)
+
+
+        btnRegister.setOnClickListener {
             register()
+        }
+
+        loginRedirectText.setOnClickListener {
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 
-    fun register() {
-        val email = editTextId.text.toString()
-        val password = editTextPassword.text.toString()
+    private fun register() {
+        val email = editTextUsername.text.toString().trim()
+        val password = editTextPassword.text.toString().trim()
 
         if (email.isBlank() || password.isBlank()) {
-            Toast.makeText(this, "Please enter both ID and password", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -81,7 +90,6 @@ class RegisterActivity : AppCompatActivity() {
                     Log.e("RegisterActivity", "Register failed. Response: ${response.body?.string()}")
                     return false
                 }
-
 
                 val responseBody = response.body?.string() ?: return false
                 val authResponse = Gson().fromJson(responseBody, AuthResponse::class.java)

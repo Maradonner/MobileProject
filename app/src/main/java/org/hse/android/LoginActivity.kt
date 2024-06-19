@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -26,23 +27,30 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import services.TokenManager
 
 class LoginActivity : AppCompatActivity() {
-    private lateinit var editTextId: EditText
+    private lateinit var editTextUsername: EditText
     private lateinit var editTextPassword: EditText
     private lateinit var btnLogin: Button
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
     private val REQ_ONE_TAP = 2
+    private lateinit var signupRedirectText: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         // Email/Password login views
-        editTextId = findViewById(R.id.editTextId)
-        editTextPassword = findViewById(R.id.editTextTextPassword)
-        btnLogin = findViewById(R.id.btnLogin)
+        editTextUsername = findViewById(R.id.login_username)
+        editTextPassword = findViewById(R.id.login_password)
+        signupRedirectText = findViewById(R.id.signupRedirectText)
+
+        btnLogin = findViewById(R.id.login_button)
         btnLogin.setOnClickListener {
             performLogin()
+        }
+
+        signupRedirectText.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
         // Google sign-in setup
@@ -64,7 +72,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun performLogin() {
-        val email = editTextId.text.toString().trim()
+        val email = editTextUsername.text.toString().trim()
         val password = editTextPassword.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty()) {
