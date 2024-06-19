@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import models.Comment;
 import models.Discount;
 import models.DiscountListResponse;
 import models.DiscountResponse;
@@ -176,6 +177,7 @@ public class DiscountListActivity extends AppCompatActivity{
 
             List<Discount> discounts = discountListResponse.getItems();
 
+
             adapter = new DiscountAdapter(discounts);
             adapter.setOnDiscountClickListener(onDiscountClickListener);
 
@@ -208,6 +210,7 @@ public class DiscountListActivity extends AppCompatActivity{
             Gson gson = new Gson();
             String discountJson = gson.toJson(discount);
             // Добавляем JSON-строку в Intent
+            Log.d("CheckCOms", discountJson);
             intent.putExtra("discountJson", discountJson);
             startActivity(intent);
         }
@@ -243,7 +246,7 @@ public class DiscountListActivity extends AppCompatActivity{
             if (discount.getShop() != null) {
                 holder.shop.setText(String.valueOf(discount.getShop().getName()));
             }
-            holder.commentsCount.setText(String.valueOf(0)); // Сделать получение кол-ва комментов
+            holder.commentsCount.setText(String.valueOf(discount.getComments().size())); // Сделать получение кол-ва комментов
             Glide.with(holder.itemView.getContext())
                     .load(discount.getImageLink())
                     .into(holder.imageView);

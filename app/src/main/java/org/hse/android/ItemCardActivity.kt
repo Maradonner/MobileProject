@@ -169,7 +169,7 @@ class ItemCardActivity : AppCompatActivity() {
     }
 
     private fun addNewComment(content: String, discountId: String) {
-        val url = "http://109.68.213.18/api/Comment/add" // Замените на ваш API URL
+        val url = "http://109.68.213.18/api/Comment/add"
 
         val jsonObject = JSONObject()
         jsonObject.put("content", content)
@@ -240,15 +240,17 @@ class ItemCardActivity : AppCompatActivity() {
                 return
             }
             val responseString = body.string()
+
             Log.d("TEST_PARSE_comment", responseString)
+            Log.d("TEST_COMMENTS_SIZE", discount.comments?.size.toString())
 
             val listType = object : TypeToken<List<Comment?>?>() {}.type
             val comments = gson.fromJson<List<Comment>>(responseString, listType)
-            commentsAdapter = CommentsAdapter(comments) {}
+            commentsAdapter = CommentsAdapter(comments, discount.id!!, TokenManager(this@ItemCardActivity)) {}
             recyclerView.adapter = commentsAdapter
 
 // Делаем что-то с данными
-            for (comment in comments) {
+            for (comment in discount.comments!!) {
                 Log.d("MyApp", "Comment: " + comment.userName + ", " + comment.content)
             }
         } catch (e: Exception) {
