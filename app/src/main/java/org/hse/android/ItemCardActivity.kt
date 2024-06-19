@@ -1,7 +1,6 @@
 package org.hse.android
 
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -9,7 +8,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +32,7 @@ import services.TokenManager
 import java.io.IOException
 
 
-class ItemCardActivity : AppCompatActivity() {
+class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var discount: Discount
@@ -57,7 +55,11 @@ class ItemCardActivity : AppCompatActivity() {
         buttonAddComment = findViewById(R.id.btnAddComment)
 
         buttonAddComment.setOnClickListener {
-            layoutComments.visibility = View.VISIBLE
+            if (layoutComments.visibility == View.VISIBLE) {
+                layoutComments.visibility = View.GONE
+            } else {
+                layoutComments.visibility = View.VISIBLE
+            }
         }
 
         buttonSubmitComment = findViewById(R.id.btnSubmitComment)
@@ -169,7 +171,7 @@ class ItemCardActivity : AppCompatActivity() {
     }
 
     private fun addNewComment(content: String, discountId: String) {
-        val url = "http://109.68.213.18/api/Comment/add" // Замените на ваш API URL
+        val url = "http://109.68.213.18/api/Comment/add"
 
         val jsonObject = JSONObject()
         jsonObject.put("content", content)
@@ -240,20 +242,29 @@ class ItemCardActivity : AppCompatActivity() {
                 return
             }
             val responseString = body.string()
+
             Log.d("TEST_PARSE_comment", responseString)
+            Log.d("TEST_COMMENTS_SIZE", discount.comments?.size.toString())
 
             val listType = object : TypeToken<List<Comment?>?>() {}.type
             val comments = gson.fromJson<List<Comment>>(responseString, listType)
-            commentsAdapter = CommentsAdapter(comments) {}
-            recyclerView.adapter = commentsAdapter
+
+            runOnUiThread {
+                commentsAdapter = CommentsAdapter(this, comments, discount.id!!, TokenManager(this@ItemCardActivity), this) {}
+                recyclerView.adapter = commentsAdapter
+            }
 
 // Делаем что-то с данными
-            for (comment in comments) {
+            for (comment in discount.comments!!) {
                 Log.d("MyApp", "Comment: " + comment.userName + ", " + comment.content)
             }
         } catch (e: Exception) {
             Log.e("PARSE_RESPONSE", "", e)
         }
 
+    }
+
+    override fun onCommentsUpdated() {
+        getComments() // Вызов функции getComments()
     }
 }
