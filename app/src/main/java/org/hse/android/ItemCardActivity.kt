@@ -246,8 +246,11 @@ class ItemCardActivity : AppCompatActivity() {
 
             val listType = object : TypeToken<List<Comment?>?>() {}.type
             val comments = gson.fromJson<List<Comment>>(responseString, listType)
-            commentsAdapter = CommentsAdapter(comments, discount.id!!, TokenManager(this@ItemCardActivity)) {}
-            recyclerView.adapter = commentsAdapter
+
+            runOnUiThread {
+                commentsAdapter = CommentsAdapter(comments, discount.id!!, TokenManager(this@ItemCardActivity)) {}
+                recyclerView.adapter = commentsAdapter
+            }
 
 // Делаем что-то с данными
             for (comment in discount.comments!!) {
