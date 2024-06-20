@@ -1,5 +1,6 @@
 package org.hse.android
 
+import BaseActivity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -29,7 +30,7 @@ import services.AuthInterceptor
 import services.TokenManager
 
 
-class UploadImageActivity : AppCompatActivity() {
+class UploadImageActivity : BaseActivity() {
     private lateinit var imageViewSelected: ImageView
     private lateinit var buttonSelectImage: Button
     private lateinit var buttonUpload: Button

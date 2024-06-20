@@ -1,5 +1,6 @@
 package org.hse.android
 
+import BaseActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -32,7 +33,7 @@ import services.TokenManager
 import java.io.IOException
 
 
-class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedListener {
+class ItemCardActivity : BaseActivity(), CommentsAdapter.OnCommentsUpdatedListener {
     private lateinit var recyclerView: RecyclerView
     private lateinit var commentsAdapter: CommentsAdapter
     private lateinit var discount: Discount
@@ -85,7 +86,9 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
         description.setText(discount.description)
         defaultPrice.setText(String.format("%.3f", discount.defaultPrice) + " ₽")
         discountPrice.setText(String.format("%.3f", discount.discountPrice)+ " ₽")
-        country.setText(discount.country!!.name)
+        if (discount.country != null) {
+            country.setText(discount.country!!.name)
+        }
 
         val imageUrl = discount.imageLink
 
