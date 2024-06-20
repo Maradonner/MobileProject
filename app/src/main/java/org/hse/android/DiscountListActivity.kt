@@ -1,5 +1,6 @@
 package org.hse.android
 
+import BaseActivity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -25,7 +26,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
-class DiscountListActivity : AppCompatActivity() {
+class DiscountListActivity : BaseActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttonPrevPage: Button
     private lateinit var buttonNextPage: Button
@@ -174,8 +175,8 @@ class DiscountListActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: DiscountViewHolder, position: Int) {
             val discount = discountList[position]
             holder.title.text = discount.title
-            holder.defuaultPrice.text = discount.defaultPrice.toString()
-            holder.discountPrice.text = discount.discountPrice.toString()
+            holder.defuaultPrice.text = String.format("%.3f", discount.defaultPrice) + " ₽"
+            holder.discountPrice.text = String.format("%.3f", discount.discountPrice)+ " ₽"
             if (discount.country != null) {
                 holder.country.text = discount.country.name
             }

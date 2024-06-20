@@ -1,5 +1,6 @@
 package org.hse.android
 
+import BaseActivity
 import android.Manifest
 import android.app.Activity
 import android.content.Context
@@ -40,7 +41,7 @@ import java.io.FileOutputStream
 import java.io.FileWriter
 
 
-class CreateDiscountActivity : AppCompatActivity() {
+class CreateDiscountActivity : BaseActivity() {
 
     private lateinit var editTextTitle: EditText
     private lateinit var editTextDescription: EditText
@@ -180,7 +181,7 @@ class CreateDiscountActivity : AppCompatActivity() {
         val discountPrice = editTextDiscountPrice.text.toString().trim()
 
         if (title.isEmpty() || description.isEmpty() || defaultPrice.isEmpty() || discountPrice.isEmpty()) {
-            Toast.makeText(this, "All fields must be filled", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Все поля должны быть заполнены!", Toast.LENGTH_SHORT).show()
             return
         }
         val discount: Discount = Discount()
@@ -228,16 +229,16 @@ class CreateDiscountActivity : AppCompatActivity() {
                 val responseBody = response.body?.string()
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@CreateDiscountActivity, "Discount created successfully: $responseBody", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateDiscountActivity, "Скидка успешно добавлена!: $responseBody", Toast.LENGTH_LONG).show()
                     } else {
                         Log.e("ErrorResponse", responseBody.toString())
-                        Toast.makeText(this@CreateDiscountActivity, "Failed to create discount: $responseBody", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@CreateDiscountActivity, "Не удалось добавить скидку: $responseBody", Toast.LENGTH_LONG).show()
                     }
                 }
             }
         } catch (e: Exception) {
             withContext(Dispatchers.Main) {
-                Toast.makeText(this@CreateDiscountActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@CreateDiscountActivity, "Ошибка:: ${e.message}", Toast.LENGTH_LONG).show()
             }
             Log.e("CreateDiscountActivity", "Error:", e)
         }

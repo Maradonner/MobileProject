@@ -50,7 +50,7 @@ class RegisterActivity : AppCompatActivity() {
         val password = editTextPassword.text.toString().trim()
 
         if (email.isBlank() || password.isBlank()) {
-            Toast.makeText(this, "Please enter both Username and Password", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Введите логин и пароль", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -61,7 +61,7 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(Intent(this@RegisterActivity, ProfileActivity::class.java))
                     finish()
                 } else {
-                    Toast.makeText(this@RegisterActivity, "Register failed. Please check your credentials.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@RegisterActivity, "Регистрация не удалась. Проверьте введенные данные.", Toast.LENGTH_LONG).show()
                 }
             }
         }

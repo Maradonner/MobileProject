@@ -80,10 +80,12 @@ class ItemCardActivity : AppCompatActivity(), CommentsAdapter.OnCommentsUpdatedL
         val description = findViewById<TextView>(R.id.tvProductDescription)
         val defaultPrice = findViewById<TextView>(R.id.tvDefaultPrice)
         val discountPrice = findViewById<TextView>(R.id.tvDiscountPrice)
+        val country = findViewById<TextView>(R.id.discount_country)
         title.setText(discount.title)
         description.setText(discount.description)
-        defaultPrice.setText(discount.defaultPrice.toString())
-        discountPrice.setText(discount.discountPrice.toString())
+        defaultPrice.setText(String.format("%.3f", discount.defaultPrice) + " ₽")
+        discountPrice.setText(String.format("%.3f", discount.discountPrice)+ " ₽")
+        country.setText(discount.country!!.name)
 
         val imageUrl = discount.imageLink
 

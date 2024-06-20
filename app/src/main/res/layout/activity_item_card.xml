@@ -11,6 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -18,57 +19,20 @@
             android:id="@+id/ivProductImage"
             android:layout_width="match_parent"
             android:layout_height="350dp"
-            android:scaleType="centerCrop"
-            android:contentDescription="Discount Image" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
-
-            <ImageButton
-                android:id="@+id/btnLike"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:contentDescription="like"
-                android:background="@color/white"
-                android:scaleType="fitCenter"
-                android:src="@drawable/like" />
-
-            <ImageButton
-                android:id="@+id/btnDislike"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginStart="32dp"
-                android:background="@color/white"
-                android:contentDescription="dislike"
-                android:scaleType="fitCenter"
-                android:src="@drawable/dislike" />
-
-            <View
-                android:layout_width="0dp"
-                android:layout_height="1dp"
-                android:layout_weight="1" />
-
-            <Button
-                android:id="@+id/btnViewOffer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/ViewOffer"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
-
-        </LinearLayout>
+            android:contentDescription="Discount Image"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/tvProductTitle"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:gravity="center"
             android:text="Product Title"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvProductDescription"
@@ -81,26 +45,54 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal">
 
             <org.hse.android.StrikeThroughTextView
                 android:id="@+id/tvDefaultPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textStyle="bold"
                 android:text="Default Price"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvDiscountPrice"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textStyle="bold"
                 android:text="Discount Price"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnViewOffer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ViewOffer"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+            <TextView
+                android:id="@+id/discount_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="64dp"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:text="Country"
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
 
         </LinearLayout>
 
@@ -116,9 +108,9 @@
             android:id="@+id/layout_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:orientation="horizontal"
-            android:visibility="visible"
-            android:layout_marginTop="8dp">
+            android:visibility="visible">
 
             <EditText
                 android:id="@+id/editTextComment"
@@ -126,8 +118,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:hint="Write your comment..."
-                android:textSize="16sp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Subhead" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                android:textSize="16sp" />
 
             <Button
                 android:id="@+id/btnSubmitComment"

@@ -23,9 +23,6 @@ class MainActivity : AppCompatActivity() {
             startCreateDiscountActivity()
         }
 
-        findViewById<Button>(R.id.btnToUploadImage).setOnClickListener {
-            startUploadImageActivity()
-        }
 
         findViewById<Button>(R.id.btnToDiscountList).setOnClickListener {
             startDiscountListActivity()
