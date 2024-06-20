@@ -61,4 +61,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     implementation("io.getstream:photoview:1.0.2")
+    implementation("com.auth0.android:jwtdecode:2.0.0")
 }

@@ -24,47 +24,49 @@ class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
-        //fetchProfileData()
+
+        val tokenManager = TokenManager(this)
+        val userId = tokenManager.getUserIdFromToken()
+        val email = tokenManager.getEmailFromToken()
+
+        val emailTextView: TextView = findViewById(R.id.profileEmail)
+        emailTextView.text = email
+
+        if (userId == null || email == null){
+            Toast.makeText(this, "Failed to extract user ID or Email from token.", Toast.LENGTH_SHORT).show()
+        } else {
+            fetchProfileData(userId)
+        }
+
     }
 
-//    private fun fetchProfileData() {
-//        val client = OkHttpClient()
-//        val request = Request.Builder()
-//            .url("http://109.68.213.18/api/User/f6b1ebed-6b34-4be0-8b79-8dcf51b531c2/profile")
-//            .addHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
-//            .addHeader("Connection", "keep-alive")
-//            .addHeader("Referer", "http://109.68.213.18/swagger/index.html")
-//            .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36")
-//            .addHeader("accept", "text/plain")
-//            .build()
-//
-//        CoroutineScope(Dispatchers.IO).launch {
-//            val response: Response = client.newCall(request).execute()
-//            val responseData = response.body?.string()
-//
-//            if (response.isSuccessful && !responseData.isNullOrEmpty()) {
-//                val profile = Gson().fromJson(responseData, Profile::class.java)
-//                withContext(Dispatchers.Main) {
-//                    displayProfileData(profile)
-//                }
-//            }
-//        }
-//    }
-//
-//    private fun displayProfileData(profile: Profile) {
-//        val totalDiscountsTextView: TextView = findViewById(R.id.totalDiscountsTextView)
-//        val rankingTextView: TextView = findViewById(R.id.rankingTextView)
-//        val highestRatingTextView: TextView = findViewById(R.id.highestRatingTextView)
-//        val lowestRatingTextView: TextView = findViewById(R.id.lowestRatingTextView)
-//        val averageRatingTextView: TextView = findViewById(R.id.averageRatingTextView)
-//        val totalReactionsTextView: TextView = findViewById(R.id.totalReactionsTextView)
-//
-//        totalDiscountsTextView.text = profile.totalDiscounts.toString()
-//        rankingTextView.text = profile.ranking.toString()
-//        highestRatingTextView.text = profile.highestRating?.toString() ?: "N/A"
-//        lowestRatingTextView.text = profile.lowestRating?.toString() ?: "N/A"
-//        averageRatingTextView.text = profile.averageRating?.toString() ?: "N/A"
-//        totalReactionsTextView.text = profile.totalReactions.toString()
-//    }
+    private fun fetchProfileData(userId: String) {
+        val client = OkHttpClient()
+        val request = Request.Builder()
+            .url("http://109.68.213.18/api/User/$userId/profile")
+            .addHeader("accept", "text/plain")
+            .build()
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val response: Response = client.newCall(request).execute()
+            val responseData = response.body?.string()
+
+            if (response.isSuccessful && !responseData.isNullOrEmpty()) {
+                val profile = Gson().fromJson(responseData, Profile::class.java)
+                withContext(Dispatchers.Main) {
+                    displayProfileData(profile)
+                }
+            } else {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@ProfileActivity, "Failed to fetch profile data.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
+    private fun displayProfileData(profile: Profile) {
+        val postsNumberTextView: TextView = findViewById(R.id.postsNumber)
+        postsNumberTextView.text = profile.totalDiscounts.toString()
+    }
 
 }

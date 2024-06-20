@@ -72,7 +72,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/postsNumber"
-                        android:text="27"
                         android:gravity="center"
                         android:textAlignment="center"
                         android:textColor="@color/lavender"
@@ -90,103 +89,8 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/followersNo"
-                        android:text="455"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:textColor="@color/lavender"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/followers"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Followers"
-                        android:textAlignment="center"
-                        android:textColor="@color/lavender"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    android:layout_margin="5dp"
-                    android:padding="8dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/followingNo"
-                        android:text="413"
-                        android:gravity="center"
-                        android:textAlignment="center"
-                        android:textColor="@color/lavender"
-                        android:textSize="26sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/following"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/Following"
-                        android:textAlignment="center"
-                        android:textColor="@color/lavender"
-                        android:textSize="12sp" />
-
-                </LinearLayout>
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Name"
-                    android:textColor="@color/lavender"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profileName"
-                    android:text="name"
-                    android:layout_weight="1"
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/grey"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:alpha="0.5"
-                android:background="@color/lavender" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -223,40 +127,6 @@
                 android:alpha="0.5"
                 android:background="@color/lavender" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@string/Username"
-                    android:textColor="@color/lavender"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/profileUsername"
-                    android:text="username"
-                    android:layout_weight="1"
-                    android:textAlignment="viewEnd"
-                    android:textColor="@color/grey"
-                    android:textSize="18sp" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_margin="10dp"
-                android:alpha="0.5"
-                android:background="@color/lavender" />
 
             <LinearLayout
                 android:layout_width="match_parent"

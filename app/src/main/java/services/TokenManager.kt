@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.auth0.android.jwt.JWT
 
 fun provideEncryptedSharedPreferences(context: Context): SharedPreferences {
     val masterKey = MasterKey.Builder(context)
@@ -41,5 +42,25 @@ class TokenManager(context: Context) {
 
     fun logout() {
         sharedPreferences.edit().clear().apply()
+    }
+
+    fun getUserIdFromToken(): String? {
+        val token = getAccessToken() ?: return null
+        return try {
+            val jwt = JWT(token)
+            jwt.getClaim("Id").asString()
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    fun getEmailFromToken(): String? {
+        val token = getAccessToken() ?: return null
+        return try {
+            val jwt = JWT(token)
+            jwt.getClaim("Email").asString()
+        } catch (e: Exception) {
+            null
+        }
     }
 }
