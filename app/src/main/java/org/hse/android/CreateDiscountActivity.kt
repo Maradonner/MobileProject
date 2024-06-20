@@ -51,7 +51,7 @@ class CreateDiscountActivity : BaseActivity() {
     private lateinit var editTextDiscountPrice: EditText
     private lateinit var buttonSubmit: Button
     private lateinit var buttonAddImage: Button
-    private lateinit var imageLink: String
+    private var imageLink: String? = null
     private var imageUri: Uri? = null
     private lateinit var imageViewSelected: ImageView
 
