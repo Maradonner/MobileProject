@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -31,7 +34,7 @@ class DiscountListActivity : BaseActivity() {
     private lateinit var buttonPrevPage: Button
     private lateinit var buttonNextPage: Button
     private lateinit var textViewPagination: TextView
-
+    private lateinit var editTextSearch: EditText
     private var adapter: DiscountAdapter? = null
 
     private val handler = Handler(Looper.getMainLooper())
@@ -58,6 +61,16 @@ class DiscountListActivity : BaseActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
+        editTextSearch = findViewById(R.id.editTextSearch)
+        editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                adapter?.filter(s.toString())
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
         getDiscounts()
 
     }
@@ -164,6 +177,7 @@ class DiscountListActivity : BaseActivity() {
 
     class DiscountAdapter(private val discountList: List<Discount>) :
         RecyclerView.Adapter<DiscountAdapter.DiscountViewHolder>() {
+        private var filteredDiscountList: List<Discount> = discountList
 
         var onDiscountClickListener: OnDiscountClickListener? = null
 
@@ -189,7 +203,16 @@ class DiscountListActivity : BaseActivity() {
                 .into(holder.imageView)
             holder.commentsCount.text = discount.commentsCount.toString()
         }
-
+        fun filter(query: String) {
+            filteredDiscountList = if (query.isEmpty()) {
+                discountList
+            } else {
+                discountList.filter { discount ->
+                    discount.title.contains(query, ignoreCase = true)
+                }
+            }
+            notifyDataSetChanged()
+        }
         override fun getItemCount(): Int {
             return discountList.size
         }
