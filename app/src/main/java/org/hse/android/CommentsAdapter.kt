@@ -25,6 +25,8 @@ import org.json.JSONObject
 import services.AuthInterceptor
 import services.TokenManager
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class CommentsAdapter(private val context: Context, private var comments: List<Comment>, private val parentDiscountId: String, private val tokenManager: TokenManager, private val activity: ItemCardActivity, private val onReplyClicked: (Comment) -> Unit) :
     RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>() {
@@ -53,7 +55,12 @@ class CommentsAdapter(private val context: Context, private var comments: List<C
         val comment = comments[position]
         holder.tvUserName.text = comment.userName
         holder.tvContent.text = comment.content
-        holder.tvCreatedAt.text = comment.createdAt
+        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSSXXX", Locale.getDefault())
+        val outputFormat = SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault())
+
+        val date = inputFormat.parse(comment.createdAt)
+        val output = outputFormat.format(date)
+        holder.tvCreatedAt.text = output
         layoutComment = holder.bufLayoutComment
 
         layoutComment.visibility = View.GONE
