@@ -27,68 +27,68 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:textSize="36sp"
+                android:text="@string/Login"
                 android:textAlignment="center"
-                android:textStyle="bold"
-                android:textColor="@color/lavender"/>
+                android:textColor="@color/lavender"
+                android:textSize="36sp"
+                android:textStyle="bold" />
 
 
             <EditText
+                android:id="@+id/login_username"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/login_username"
-                android:background="@drawable/lavender_border"
                 android:layout_marginTop="30dp"
-                android:padding="8dp"
-                android:hint="Username"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/ic_baseline_person_pin_24"
                 android:drawablePadding="8dp"
-                android:textColor="@color/grey"/>
+                android:hint="@string/Username"
+                android:padding="8dp"
+                android:textColor="@color/grey" />
 
             <EditText
+                android:id="@+id/login_password"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:id="@+id/login_password"
-                android:background="@drawable/lavender_border"
                 android:layout_marginTop="20dp"
-                android:padding="8dp"
-                android:hint="Password"
-                android:inputType="textPassword"
+                android:background="@drawable/lavender_border"
                 android:drawableLeft="@drawable/ic_baseline_lock_24"
                 android:drawablePadding="8dp"
-                android:textColor="@color/grey"/>
+                android:hint="@string/Password"
+                android:inputType="textPassword"
+                android:padding="8dp"
+                android:textColor="@color/grey" />
 
             <Button
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:text="Login"
                 android:id="@+id/login_button"
-                android:textSize="18sp"
-                android:layout_marginTop="30dp"
-                app:cornerRadius = "20dp"/>
-
-            <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="Login with Google"
-                android:id="@+id/buttonSignInWithGoogle"
+                android:layout_marginTop="30dp"
+                android:text="@string/Login"
                 android:textSize="18sp"
+                app:cornerRadius="20dp" />
+
+            <Button
+                android:id="@+id/buttonSignInWithGoogle"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
                 android:layout_marginTop="20dp"
-                app:cornerRadius="20dp"/>
+                android:text="@string/LoginGoogle"
+                android:textSize="18sp"
+                app:cornerRadius="20dp" />
 
             <TextView
+                android:id="@+id/signupRedirectText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/signupRedirectText"
-                android:text="Not yet registered? Sign Up"
                 android:layout_gravity="center"
-                android:padding="8dp"
                 android:layout_marginTop="10dp"
-                android:textSize="18sp"
-                android:textColor="@color/lavender"
                 android:clickable="true"
-                android:focusable="true" />
+                android:focusable="true"
+                android:padding="8dp"
+                android:text="@string/NotRegistred"
+                android:textColor="@color/lavender"
+                android:textSize="18sp" />
 
         </LinearLayout>
 

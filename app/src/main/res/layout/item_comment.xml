@@ -28,8 +28,8 @@
         android:id="@+id/btnReply"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Reply"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="4dp"
+        android:text="@string/Reply" />
 
     <!-- Nested RecyclerView for replies, if any -->
     <LinearLayout
@@ -48,14 +48,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="Write your comment..."
+            android:hint="@string/WriteComment"
             android:textSize="16sp" />
 
         <Button
             android:id="@+id/btnSubmitComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="@string/Submit" />
 
     </LinearLayout>
 

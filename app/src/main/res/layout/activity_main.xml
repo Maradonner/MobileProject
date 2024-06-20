@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/ivLogo"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:src="@drawable/logo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,47 +37,47 @@
                 android:id="@+id/btnToLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Login"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/Login"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
             <Button
                 android:id="@+id/btnToRegister"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Register"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/Registration"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
             <Button
                 android:id="@+id/btnToCreateDiscount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Create Discount"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/CreateDiscount"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
             <Button
                 android:id="@+id/btnToUploadImage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Image"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/UploadImage"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
             <Button
                 android:id="@+id/btnToDiscountList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Discount List"
-                android:textAppearance="@style/TextAppearance.AppCompat.Button"
-                android:layout_marginBottom="16dp" />
+                android:layout_marginBottom="16dp"
+                android:text="@string/DiscountList"
+                android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
             <Button
                 android:id="@+id/btnToProfileActivity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Profile"
+                android:text="@string/Profile"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         </LinearLayout>

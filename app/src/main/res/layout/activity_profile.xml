@@ -80,13 +80,13 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/posts"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/posts"
-                        android:text="Posts"
+                        android:text="@string/Posts"
                         android:textAlignment="center"
                         android:textColor="@color/lavender"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -110,13 +110,13 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
                         android:id="@+id/followers"
-                        android:text="Followers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/Followers"
                         android:textAlignment="center"
                         android:textColor="@color/lavender"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -140,13 +140,13 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:id="@+id/following"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/following"
-                        android:text="Following"
+                        android:text="@string/Following"
                         android:textAlignment="center"
                         android:textColor="@color/lavender"
-                        android:textSize="16sp" />
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -160,14 +160,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/name"
                     android:layout_weight="1"
-                    android:text="Name"
-                    android:textStyle="bold"
+                    android:text="@string/Name"
                     android:textColor="@color/lavender"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -230,14 +230,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/username"
                     android:layout_weight="1"
-                    android:text="Username"
-                    android:textStyle="bold"
+                    android:text="@string/Username"
                     android:textColor="@color/lavender"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -265,14 +265,14 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/password"
                     android:layout_weight="1"
-                    android:text="Password"
-                    android:textStyle="bold"
+                    android:text="@string/Password"
                     android:textColor="@color/lavender"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="wrap_content"

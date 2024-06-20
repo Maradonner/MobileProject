@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">EpicSavings</string>
+    <string name="app_name">Compass Discounter</string>
+    <string name="Next">Вперед</string>
+    <string name="Back">Назад</string>
+    <string name="Login">Авторизация</string>
+    <string name="Registration">Регистрация</string>
+    <string name="CreateDiscount">Добавить скидку</string>
+    <string name="UploadImage">Загрузить изображение</string>
+    <string name="DiscountList">Все скидки</string>
+    <string name="Discounts">Скидки</string>
+    <string name="Profile">Профиль</string>
+    <string name="LoginGoogle">Войти через Google</string>
+    <string name="NotRegistred">Нет аккаунта? Зарегистрируйтесь</string>
+    <string name="Password">Пароль</string>
+    <string name="Username">Имя пользователя</string>
+    <string name="AlreadyUser">Уже зарегистрированы? Авторизуйтесь</string>
+    <string name="SelectImage">Выбрать изображение</string>
+    <string name="ViewOffer">Открыть ссылку</string>
+    <string name="AddComment">Оставить комментарий</string>
+    <string name="Reply">Ответить</string>
+    <string name="WriteComment">Введите комментарий...</string>
+    <string name="Submit">Отправить</string>
+    <string name="Name">Имя</string>
+    <string name="Posts">Публикации</string>
+    <string name="Post">Публикация</string>
+    <string name="Followers">Подписчики</string>
+    <string name="Follow">Подписка</string>
+    <string name="Following">Подписки</string>
+    <string name="EditProfile">Редактировать профиль</string>
+    <string name="Upload">Добавить</string>
 </resources>

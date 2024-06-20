@@ -40,11 +40,11 @@
                 android:id="@+id/btnDislike"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                android:contentDescription="dislike"
+                android:layout_marginStart="32dp"
                 android:background="@color/white"
-                android:src="@drawable/dislike"
+                android:contentDescription="dislike"
                 android:scaleType="fitCenter"
-                android:layout_marginStart="48dp" />
+                android:src="@drawable/dislike" />
 
             <View
                 android:layout_width="0dp"
@@ -55,7 +55,7 @@
                 android:id="@+id/btnViewOffer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="View Offer"
+                android:text="@string/ViewOffer"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         </LinearLayout>
@@ -109,7 +109,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Add Comment"
+            android:text="@string/AddComment"
             android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <LinearLayout
@@ -133,7 +133,7 @@
                 android:id="@+id/btnSubmitComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Submit"
+                android:text="@string/Submit"
                 android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         </LinearLayout>
