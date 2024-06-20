@@ -76,7 +76,7 @@ class LoginActivity : AppCompatActivity() {
         val password = editTextPassword.text.toString().trim()
 
         if (email.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Email and password cannot be empty", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Введите логин и пароль!", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -87,7 +87,7 @@ class LoginActivity : AppCompatActivity() {
                     startActivity(Intent(this@LoginActivity, ProfileActivity::class.java))
                     finish()
                 } else {
-                    Toast.makeText(this@LoginActivity, "Login failed. Please check your credentials.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@LoginActivity, "Авторизация не удалась. Проверьте введенные данные.", Toast.LENGTH_LONG).show()
                 }
             }
         }
@@ -162,7 +162,7 @@ class LoginActivity : AppCompatActivity() {
                                 startActivity(Intent(this@LoginActivity, ProfileActivity::class.java))
                                 finish()
                             } else {
-                                Toast.makeText(this@LoginActivity, "Login failed.", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this@LoginActivity, "Авторизация не удалась.", Toast.LENGTH_LONG).show()
                             }
                         }
 

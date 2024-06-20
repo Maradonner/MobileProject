@@ -64,7 +64,7 @@ class UploadImageActivity : AppCompatActivity() {
         buttonUpload.setOnClickListener {
             imageUri?.let { uri ->
                 uploadImage(uri)
-            } ?: Toast.makeText(this, "Please select an image first", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(this, "Сначала выберите изображение", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -76,7 +76,7 @@ class UploadImageActivity : AppCompatActivity() {
                 selectImage()
             } else {
                 // Permission denied
-                Toast.makeText(this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Нет доступа к вашему Внутреннему Хранилищу", Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -118,15 +118,15 @@ class UploadImageActivity : AppCompatActivity() {
                 client.newCall(request).execute().use { response ->
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            Toast.makeText(this@UploadImageActivity, "Image uploaded successfully!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@UploadImageActivity, "Изображение успешно загружено!", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(this@UploadImageActivity, "Failed to upload image", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this@UploadImageActivity, "Не удалось загрузить изображение", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@UploadImageActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@UploadImageActivity, "Ошибка: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
