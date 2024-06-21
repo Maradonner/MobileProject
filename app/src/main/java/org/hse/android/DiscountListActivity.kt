@@ -47,6 +47,7 @@ class DiscountListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_discount_list)
+        editTextSearch = findViewById(R.id.editTextSearch)
 
         buttonPrevPage = findViewById(R.id.buttonPrevPage)
         buttonNextPage = findViewById(R.id.buttonNextPage)
@@ -55,11 +56,6 @@ class DiscountListActivity : AppCompatActivity() {
         buttonNextPage.setOnClickListener { nextPage() }
         buttonPrevPage.setOnClickListener { previousPage() }
 
-        val buttonSearch = findViewById<Button>(R.id.buttonSearch)
-        buttonSearch.setOnClickListener {
-            currentPage = 1
-            getDiscounts()
-        }
         recyclerView = findViewById(R.id.discountListView)
         val layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = layoutManager
@@ -69,7 +65,7 @@ class DiscountListActivity : AppCompatActivity() {
         getDiscounts()
 
 
-        editTextSearch = findViewById(R.id.editTextSearch)
+
         editTextSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {}
 
@@ -111,13 +107,19 @@ class DiscountListActivity : AppCompatActivity() {
 
     private fun updateTextViewPagination() {
         textViewPagination.text = "$currentPage/$totalPages"
+        if (currentPage < totalPages) {
+            buttonNextPage.isEnabled = true
+        }
+        if (currentPage > 1) {
+            buttonPrevPage.isEnabled = true
+        }
     }
 
     fun getDiscounts() {
         val client = OkHttpClient().newBuilder().build()
         val mediaType = "application/json".toMediaType()
         val searchQuery = editTextSearch.text.toString()
-        val body = "{\r\n \"currentPage\": $currentPage,\r\n\"pageSize\": 12, \r\n\"searchQuery\": \"$searchQuery\"\r\n}".toRequestBody(mediaType)
+        val body = "{\r\n \"currentPage\": $currentPage,\r\n\"pageSize\": 12, \r\n\"title\": \"$searchQuery\"\r\n}".toRequestBody(mediaType)
         val request = Request.Builder()
             .url("http://109.68.213.18/api/Discounts/search")
             .method("POST", body)
