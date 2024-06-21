@@ -1,15 +1,17 @@
 package org.hse.android
 
-import BaseActivity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -26,12 +28,12 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
 
-class DiscountListActivity : BaseActivity() {
+class DiscountListActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var buttonPrevPage: Button
     private lateinit var buttonNextPage: Button
     private lateinit var textViewPagination: TextView
-
+    private lateinit var editTextSearch: EditText
     private var adapter: DiscountAdapter? = null
 
     private val handler = Handler(Looper.getMainLooper())
@@ -53,12 +55,31 @@ class DiscountListActivity : BaseActivity() {
         buttonNextPage.setOnClickListener { nextPage() }
         buttonPrevPage.setOnClickListener { previousPage() }
 
+        val buttonSearch = findViewById<Button>(R.id.buttonSearch)
+        buttonSearch.setOnClickListener {
+            currentPage = 1
+            getDiscounts()
+        }
         recyclerView = findViewById(R.id.discountListView)
         val layoutManager = GridLayoutManager(this, 2)
         recyclerView.layoutManager = layoutManager
         recyclerView.addItemDecoration(DividerItemDecoration(this, LinearLayoutManager.VERTICAL))
 
+
         getDiscounts()
+
+
+        editTextSearch = findViewById(R.id.editTextSearch)
+        editTextSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                currentPage = 1
+                getDiscounts()
+            }
+        })
 
     }
 
@@ -95,7 +116,8 @@ class DiscountListActivity : BaseActivity() {
     fun getDiscounts() {
         val client = OkHttpClient().newBuilder().build()
         val mediaType = "application/json".toMediaType()
-        val body = "{\r\n \"currentPage\": $currentPage,\r\n\"pageSize\": 12\r\n}".toRequestBody(mediaType)
+        val searchQuery = editTextSearch.text.toString()
+        val body = "{\r\n \"currentPage\": $currentPage,\r\n\"pageSize\": 12, \r\n\"searchQuery\": \"$searchQuery\"\r\n}".toRequestBody(mediaType)
         val request = Request.Builder()
             .url("http://109.68.213.18/api/Discounts/search")
             .method("POST", body)
@@ -175,8 +197,8 @@ class DiscountListActivity : BaseActivity() {
         override fun onBindViewHolder(holder: DiscountViewHolder, position: Int) {
             val discount = discountList[position]
             holder.title.text = discount.title
-            holder.defuaultPrice.text = String.format("%.3f", discount.defaultPrice) + " ₽"
-            holder.discountPrice.text = String.format("%.3f", discount.discountPrice)+ " ₽"
+            holder.defuaultPrice.text = discount.defaultPrice.toString()
+            holder.discountPrice.text = discount.discountPrice.toString()
             if (discount.country != null) {
                 holder.country.text = discount.country.name
             }
